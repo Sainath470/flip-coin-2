@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
-coin=$((1+RANDOM%2)) 
-if [ $coin -eq 1 ]
+Coin=$((1+RANDOM%2)) 
+if [ $Coin -eq 1 ]
 then
 	echo "Head wins"
 else
