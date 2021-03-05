@@ -1,28 +1,56 @@
 #!/bin/bash -x
-declare -A result1 result2
-num=0
-h=0
-t=0
-while [ $num -lt 50 ]
+H=0
+T=0
+HH=0
+HT=0
+TH=0
+TT=0
+count=60
+declare -A coinCombination
+
+#singlet combination
+for ((i=1; i<=60; i++))
 do
-((num++))
-Coin=$((1+RANDOM%2))
-if [ $Coin -eq 1 ]
-then
-	h=$(($h+1))
-	result1[count]="H"
-	((count++))
-else
-	t=$(($t+1))
-	result2[count]="T"
-	((count++))
-fi
+	flip=$((RANDOM%2))
+	if [ $flip -eq 0 ]
+	then
+		((H++))
+	else
+		((T++))
+	fi
+done
+coinCombination["H"]=$(($(($H*100))/$count))
+coinCombination["T"]=$(($T*100/$count))
+
+#doublet combination
+count=30
+for ((i=1; i<=count; i++))
+do
+   flip=$((RANDOM%2))
+   if [ $flip -eq 0 ]
+   then
+      flip=$((RANDOM%2))
+		if [ $flip -eq 0 ]
+		then
+			((HH++))
+		else
+			((HT++))
+		fi
+   else
+      flip=$((RANDOM%2))
+      if [ $flip -eq 0 ]
+      then
+         ((TH++))
+      else
+         ((TT++))
+      fi
+   fi
 done
 
-echo "total head wins" $h
-echo ${result1[@]}
-Head_percentage=$((100*$h/50))
-echo "total tail wins" $t
-echo ${result2[@]}
-Tail_percentage=$((100*$t/50))
-echo "Heads percentage is:" $Head_percentage"%" "Tails percentage is: "$Tail_percentage"%"
+echo $HH $HT $TH $TT
+coinCombination["HH"]=$(($HH*100/$count))
+coinCombination["HT"]=$(($HT*100/$count))
+coinCombination["TH"]=$(($TH*100/$count))
+coinCombination["TT"]=$(($TT*100/$count))
+
+echo ${coinCombination[@]}
